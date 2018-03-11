@@ -16,7 +16,7 @@ Apache Maven 3.5.2
 
 ### 运行第一章的例子
 
-```shell
+```bash
 cd HowTomcatWorksStudy
 mvn clean package exec:java -Dexec.mainClass="ex01.pyrmont.HttpServer"
 ```
