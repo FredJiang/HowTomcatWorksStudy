@@ -1,9 +1,17 @@
 package ex01.pyrmont;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//
+//
+//
+//
+//
+//
+//
+//
 
 public class Request {
   private static final Logger logger = LoggerFactory.getLogger(Request.class);
@@ -14,21 +22,8 @@ public class Request {
     this.input = input;
   }
 
-  public void parse() {
-    // Read a set of characters from the socket
-    StringBuffer request = new StringBuffer(2048);
-    int i;
-    byte[] buffer = new byte[2048];
-    try {
-      i = input.read(buffer);
-    } catch (IOException e) {
-      e.printStackTrace();
-      i = -1;
-    }
-    for (int j = 0; j < i; j++) {
-      request.append((char) buffer[j]);
-    }
-    uri = parseUri(request.toString());
+  public String getUri() {
+    return uri;
   }
 
   private String parseUri(String requestString) {
@@ -42,7 +37,19 @@ public class Request {
     return null;
   }
 
-  public String getUri() {
-    return uri;
+  public void parse() {
+    StringBuffer request = new StringBuffer(2048);
+    int i;
+    byte[] buffer = new byte[2048];
+    try {
+      i = input.read(buffer);
+    } catch (IOException e) {
+      e.printStackTrace();
+      i = -1;
+    }
+    for (int j = 0; j < i; j++) {
+      request.append((char) buffer[j]);
+    }
+    uri = parseUri(request.toString());
   }
 }
