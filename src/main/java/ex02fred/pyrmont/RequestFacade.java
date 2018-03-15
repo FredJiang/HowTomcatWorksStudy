@@ -1,4 +1,4 @@
-package ex02.pyrmont;
+package ex02fred.pyrmont;
 
 import java.io.IOException;
 import java.io.BufferedReader;
@@ -118,6 +118,7 @@ public class RequestFacade implements ServletRequest {
   public void setCharacterEncoding(String encoding) throws UnsupportedEncodingException {
     request.setCharacterEncoding(encoding);
   }
+
   // added by fred
   /**
    * The default behavior of this method is to return getRemotePort() on the wrapped request object.

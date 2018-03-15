@@ -1,8 +1,8 @@
-package ex02.pyrmont;
+package ex02fred.pyrmont;
 
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Enumeration;
 import java.util.Locale;
@@ -10,9 +10,11 @@ import java.util.Map;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Request implements ServletRequest {
-
+  private static final Logger logger = LoggerFactory.getLogger(Request.class);
   private InputStream input;
   private String uri;
 
@@ -25,6 +27,7 @@ public class Request implements ServletRequest {
   }
 
   private String parseUri(String requestString) {
+    logger.info(requestString);
     int index1, index2;
     index1 = requestString.indexOf(' ');
     if (index1 != -1) {
@@ -35,7 +38,6 @@ public class Request implements ServletRequest {
   }
 
   public void parse() {
-    // Read a set of characters from the socket
     StringBuffer request = new StringBuffer(2048);
     int i;
     byte[] buffer = new byte[2048];
@@ -48,7 +50,6 @@ public class Request implements ServletRequest {
     for (int j = 0; j < i; j++) {
       request.append((char) buffer[j]);
     }
-    System.out.print(request.toString());
     uri = parseUri(request.toString());
   }
 

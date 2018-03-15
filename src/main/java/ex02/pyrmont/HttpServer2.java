@@ -7,13 +7,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 
-public class HttpServer1 {
+public class HttpServer2 {
 
-  /**
-   * WEB_ROOT is the directory where our HTML and other files reside. For this package, WEB_ROOT is
-   * the "webroot" directory under the working directory. The working directory is the location in
-   * the file system from where the java command was invoked.
-   */
   // shutdown command
   private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
 
@@ -21,7 +16,7 @@ public class HttpServer1 {
   private boolean shutdown = false;
 
   public static void main(String[] args) {
-    HttpServer1 server = new HttpServer1();
+    HttpServer2 server = new HttpServer2();
     server.await();
   }
 
@@ -56,7 +51,7 @@ public class HttpServer1 {
         // check if this is a request for a servlet or a static resource
         // a request for a servlet begins with "/servlet/"
         if (request.getUri().startsWith("/servlet/")) {
-          ServletProcessor1 processor = new ServletProcessor1();
+          ServletProcessor2 processor = new ServletProcessor2();
           processor.process(request, response);
         } else {
           StaticResourceProcessor processor = new StaticResourceProcessor();

@@ -1,4 +1,4 @@
-package ex02.pyrmont;
+package ex02fred2.pyrmont;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -65,6 +65,7 @@ public class ResponseFacade implements ServletResponse {
   public void setLocale(Locale locale) {
     response.setLocale(locale);
   }
+
   // added by fred
   /**
    * The default behavior of this method is to call setCharacterEncoding(String charset) on the

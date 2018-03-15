@@ -1,26 +1,24 @@
-package ex02.pyrmont;
+package ex02fred2.pyrmont;
 
-import java.net.Socket;
-import java.net.ServerSocket;
-import java.net.InetAddress;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpServer1 {
-
-  /**
-   * WEB_ROOT is the directory where our HTML and other files reside. For this package, WEB_ROOT is
-   * the "webroot" directory under the working directory. The working directory is the location in
-   * the file system from where the java command was invoked.
-   */
-  // shutdown command
+  private static final Logger logger = LoggerFactory.getLogger(HttpServer1.class);
   private static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
-
-  // the shutdown command received
   private boolean shutdown = false;
 
+  //
+
   public static void main(String[] args) {
+    logger.info("start main");
     HttpServer1 server = new HttpServer1();
     server.await();
   }
@@ -30,18 +28,19 @@ public class HttpServer1 {
     int port = 8080;
     try {
       serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
+      logger.info("start server");
     } catch (IOException e) {
       e.printStackTrace();
       System.exit(1);
     }
 
-    // Loop waiting for a request
     while (!shutdown) {
       Socket socket = null;
       InputStream input = null;
       OutputStream output = null;
       try {
         socket = serverSocket.accept();
+        logger.info("wait client");
         input = socket.getInputStream();
         output = socket.getOutputStream();
 
@@ -52,6 +51,7 @@ public class HttpServer1 {
         // create Response object
         Response response = new Response(output);
         response.setRequest(request);
+        //
 
         // check if this is a request for a servlet or a static resource
         // a request for a servlet begins with "/servlet/"
@@ -70,6 +70,7 @@ public class HttpServer1 {
       } catch (Exception e) {
         e.printStackTrace();
         System.exit(1);
+        //
       }
     }
   }
