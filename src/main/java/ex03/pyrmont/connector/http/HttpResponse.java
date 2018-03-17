@@ -32,61 +32,38 @@ public class HttpResponse implements HttpServletResponse {
   PrintWriter writer;
   protected byte[] buffer = new byte[BUFFER_SIZE];
   protected int bufferCount = 0;
-  /**
-   * Has this response been committed yet?
-   */
+  /** Has this response been committed yet? */
   protected boolean committed = false;
-  /**
-   * The actual number of bytes written to this Response.
-   */
+  /** The actual number of bytes written to this Response. */
   protected int contentCount = 0;
-  /**
-   * The content length associated with this Response.
-   */
+  /** The content length associated with this Response. */
   protected int contentLength = -1;
-  /**
-   * The content type associated with this Response.
-   */
+  /** The content type associated with this Response. */
   protected String contentType = null;
-  /**
-   * The character encoding associated with this Response.
-   */
+  /** The character encoding associated with this Response. */
   protected String encoding = null;
 
-  /**
-   * The set of Cookies associated with this Response.
-   */
+  /** The set of Cookies associated with this Response. */
   protected ArrayList cookies = new ArrayList();
   /**
-   * The HTTP headers explicitly added via addHeader(), but not including
-   * those to be added with setContentLength(), setContentType(), and so on.
-   * This collection is keyed by the header name, and the elements are
-   * ArrayLists containing the associated values that have been set.
+   * The HTTP headers explicitly added via addHeader(), but not including those to be added with
+   * setContentLength(), setContentType(), and so on. This collection is keyed by the header name,
+   * and the elements are ArrayLists containing the associated values that have been set.
    */
   protected HashMap headers = new HashMap();
-  /**
-   * The date format we will use for creating date headers.
-   */
+  /** The date format we will use for creating date headers. */
   protected final SimpleDateFormat format =
-    new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz",Locale.US);
-  /**
-   * The error message set by <code>sendError()</code>.
-   */
+      new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
+  /** The error message set by <code>sendError()</code>. */
   protected String message = getStatusMessage(HttpServletResponse.SC_OK);
-  /**
-   * The HTTP status code associated with this Response.
-   */
+  /** The HTTP status code associated with this Response. */
   protected int status = HttpServletResponse.SC_OK;
-
-
 
   public HttpResponse(OutputStream output) {
     this.output = output;
   }
 
-  /**
-   * call this method to send headers and response to the output
-   */
+  /** call this method to send headers and response to the output */
   public void finishResponse() {
     // sendHeaders();
     // Flush and close the appropriate output mechanism
@@ -103,7 +80,6 @@ public class HttpResponse implements HttpServletResponse {
   public String getContentType() {
     return contentType;
   }
-
 
   protected String getProtocol() {
     return request.getProtocol();
@@ -194,13 +170,13 @@ public class HttpResponse implements HttpServletResponse {
         return ("Unsupported Media Type");
       case SC_USE_PROXY:
         return ("Use Proxy");
-      case 207:       // WebDAV
+      case 207: // WebDAV
         return ("Multi-Status");
-      case 422:       // WebDAV
+      case 422: // WebDAV
         return ("Unprocessable Entity");
-      case 423:       // WebDAV
+      case 423: // WebDAV
         return ("Locked");
-      case 507:       // WebDAV
+      case 507: // WebDAV
         return ("Insufficient Storage");
       default:
         return ("HTTP Response Status " + status);
@@ -210,18 +186,14 @@ public class HttpResponse implements HttpServletResponse {
   public OutputStream getStream() {
     return this.output;
   }
-  /**
-   * Send the HTTP response headers, if this has not already occurred.
-   */
+  /** Send the HTTP response headers, if this has not already occurred. */
   protected void sendHeaders() throws IOException {
-    if (isCommitted())
-      return;
+    if (isCommitted()) return;
     // Prepare a suitable output writer
     OutputStreamWriter osr = null;
     try {
       osr = new OutputStreamWriter(getStream(), getCharacterEncoding());
-    }
-    catch (UnsupportedEncodingException e) {
+    } catch (UnsupportedEncodingException e) {
       osr = new OutputStreamWriter(getStream());
     }
     final PrintWriter outputWriter = new PrintWriter(osr);
@@ -258,25 +230,25 @@ public class HttpResponse implements HttpServletResponse {
       }
     }
     // Add the session ID cookie if necessary
-/*    HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
-    HttpSession session = hreq.getSession(false);
-    if ((session != null) && session.isNew() && (getContext() != null)
-      && getContext().getCookies()) {
-      Cookie cookie = new Cookie("JSESSIONID", session.getId());
-      cookie.setMaxAge(-1);
-      String contextPath = null;
-      if (context != null)
-        contextPath = context.getPath();
-      if ((contextPath != null) && (contextPath.length() > 0))
-        cookie.setPath(contextPath);
-      else
+    /*    HttpServletRequest hreq = (HttpServletRequest) request.getRequest();
+        HttpSession session = hreq.getSession(false);
+        if ((session != null) && session.isNew() && (getContext() != null)
+          && getContext().getCookies()) {
+          Cookie cookie = new Cookie("JSESSIONID", session.getId());
+          cookie.setMaxAge(-1);
+          String contextPath = null;
+          if (context != null)
+            contextPath = context.getPath();
+          if ((contextPath != null) && (contextPath.length() > 0))
+            cookie.setPath(contextPath);
+          else
 
-      cookie.setPath("/");
-      if (hreq.isSecure())
-        cookie.setSecure(true);
-      addCookie(cookie);
-    }
-*/
+          cookie.setPath("/");
+          if (hreq.isSecure())
+            cookie.setSecure(true);
+          addCookie(cookie);
+        }
+    */
     // Send all specified cookies (if any)
     synchronized (cookies) {
       Iterator items = cookies.iterator();
@@ -316,28 +288,25 @@ public class HttpResponse implements HttpServletResponse {
          Status-Line = HTTP-Version SP Status-Code SP Reason-Phrase CRLF
       */
       int ch = fis.read(bytes, 0, BUFFER_SIZE);
-      while (ch!=-1) {
+      while (ch != -1) {
         output.write(bytes, 0, ch);
         ch = fis.read(bytes, 0, BUFFER_SIZE);
       }
-    }
-    catch (FileNotFoundException e) {
-      String errorMessage = "HTTP/1.1 404 File Not Found\r\n" +
-        "Content-Type: text/html\r\n" +
-        "Content-Length: 23\r\n" +
-        "\r\n" +
-        "<h1>File Not Found</h1>";
+    } catch (FileNotFoundException e) {
+      String errorMessage =
+          "HTTP/1.1 404 File Not Found\r\n"
+              + "Content-Type: text/html\r\n"
+              + "Content-Length: 23\r\n"
+              + "\r\n"
+              + "<h1>File Not Found</h1>";
       output.write(errorMessage.getBytes());
-    }
-    finally {
-      if (fis!=null)
-        fis.close();
+    } finally {
+      if (fis != null) fis.close();
     }
   }
 
   public void write(int b) throws IOException {
-    if (bufferCount >= buffer.length)
-      flushBuffer();
+    if (bufferCount >= buffer.length) flushBuffer();
     buffer[bufferCount++] = (byte) b;
     contentCount++;
   }
@@ -348,8 +317,7 @@ public class HttpResponse implements HttpServletResponse {
 
   public void write(byte b[], int off, int len) throws IOException {
     // If the whole thing fits in the buffer, just put it there
-    if (len == 0)
-      return;
+    if (len == 0) return;
     if (len <= (buffer.length - bufferCount)) {
       System.arraycopy(b, off, buffer, bufferCount, len);
       bufferCount += len;
@@ -362,20 +330,16 @@ public class HttpResponse implements HttpServletResponse {
     int iterations = len / buffer.length;
     int leftoverStart = iterations * buffer.length;
     int leftoverLen = len - leftoverStart;
-    for (int i = 0; i < iterations; i++)
-      write(b, off + (i * buffer.length), buffer.length);
+    for (int i = 0; i < iterations; i++) write(b, off + (i * buffer.length), buffer.length);
 
     // Write the remainder (guaranteed to fit in the buffer)
-    if (leftoverLen > 0)
-      write(b, off + leftoverStart, leftoverLen);
+    if (leftoverLen > 0) write(b, off + leftoverStart, leftoverLen);
   }
 
-  /** implementation of HttpServletResponse  */
-
+  /** implementation of HttpServletResponse */
   public void addCookie(Cookie cookie) {
-    if (isCommitted())
-      return;
-  //  if (included)
+    if (isCommitted()) return;
+    //  if (included)
     //        return;     // Ignore any call from an included servlet
     synchronized (cookies) {
       cookies.add(cookie);
@@ -383,18 +347,16 @@ public class HttpResponse implements HttpServletResponse {
   }
 
   public void addDateHeader(String name, long value) {
-    if (isCommitted())
-      return;
-//    if (included)
-  //          return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    //    if (included)
+    //          return;     // Ignore any call from an included servlet
     addHeader(name, format.format(new Date(value)));
   }
 
   public void addHeader(String name, String value) {
-    if (isCommitted())
-      return;
-//        if (included)
-  //          return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    //        if (included)
+    //          return;     // Ignore any call from an included servlet
     synchronized (headers) {
       ArrayList values = (ArrayList) headers.get(name);
       if (values == null) {
@@ -407,16 +369,15 @@ public class HttpResponse implements HttpServletResponse {
   }
 
   public void addIntHeader(String name, int value) {
-    if (isCommitted())
-      return;
-//    if (included)
-  //    return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    //    if (included)
+    //    return;     // Ignore any call from an included servlet
     addHeader(name, "" + value);
   }
 
   public boolean containsHeader(String name) {
     synchronized (headers) {
-      return (headers.get(name)!=null);
+      return (headers.get(name) != null);
     }
   }
 
@@ -437,12 +398,11 @@ public class HttpResponse implements HttpServletResponse {
   }
 
   public void flushBuffer() throws IOException {
-    //committed = true;
+    // committed = true;
     if (bufferCount > 0) {
       try {
         output.write(buffer, 0, bufferCount);
-      }
-      finally {
+      } finally {
         bufferCount = 0;
       }
     }
@@ -453,10 +413,8 @@ public class HttpResponse implements HttpServletResponse {
   }
 
   public String getCharacterEncoding() {
-    if (encoding == null)
-      return ("ISO-8859-1");
-    else
-      return (encoding);
+    if (encoding == null) return ("ISO-8859-1");
+    else return (encoding);
   }
 
   public Locale getLocale() {
@@ -470,61 +428,48 @@ public class HttpResponse implements HttpServletResponse {
   public PrintWriter getWriter() throws IOException {
     ResponseStream newStream = new ResponseStream(this);
     newStream.setCommit(false);
-    OutputStreamWriter osr =
-      new OutputStreamWriter(newStream, getCharacterEncoding());
+    OutputStreamWriter osr = new OutputStreamWriter(newStream, getCharacterEncoding());
     writer = new ResponseWriter(osr);
     return writer;
   }
 
-  /**
-   * Has the output of this response already been committed?
-   */
+  /** Has the output of this response already been committed? */
   public boolean isCommitted() {
     return (committed);
   }
 
-  public void reset() {
-  }
+  public void reset() {}
 
-  public void resetBuffer() {
-  }
+  public void resetBuffer() {}
 
-  public void sendError(int sc) throws IOException {
-  }
+  public void sendError(int sc) throws IOException {}
 
-  public void sendError(int sc, String message) throws IOException {
-  }
+  public void sendError(int sc, String message) throws IOException {}
 
-  public void sendRedirect(String location) throws IOException {
-  }
+  public void sendRedirect(String location) throws IOException {}
 
-  public void setBufferSize(int size) {
-  }
+  public void setBufferSize(int size) {}
 
   public void setContentLength(int length) {
-    if (isCommitted())
-      return;
-//    if (included)
-  //     return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    //    if (included)
+    //     return;     // Ignore any call from an included servlet
     this.contentLength = length;
   }
 
-  public void setContentType(String type) {
-  }
+  public void setContentType(String type) {}
 
   public void setDateHeader(String name, long value) {
-    if (isCommitted())
-      return;
-//    if (included)
-  //    return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    //    if (included)
+    //    return;     // Ignore any call from an included servlet
     setHeader(name, format.format(new Date(value)));
   }
 
   public void setHeader(String name, String value) {
-    if (isCommitted())
-      return;
-//    if (included)
-  //    return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    //    if (included)
+    //    return;     // Ignore any call from an included servlet
     ArrayList values = new ArrayList();
     values.add(value);
     synchronized (headers) {
@@ -535,33 +480,27 @@ public class HttpResponse implements HttpServletResponse {
       int contentLength = -1;
       try {
         contentLength = Integer.parseInt(value);
+      } catch (NumberFormatException e) {;
       }
-      catch (NumberFormatException e) {
-        ;
-      }
-      if (contentLength >= 0)
-        setContentLength(contentLength);
-    }
-    else if (match.equals("content-type")) {
+      if (contentLength >= 0) setContentLength(contentLength);
+    } else if (match.equals("content-type")) {
       setContentType(value);
     }
   }
 
   public void setIntHeader(String name, int value) {
-    if (isCommitted())
-      return;
-    //if (included)
-      //return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    // if (included)
+    // return;     // Ignore any call from an included servlet
     setHeader(name, "" + value);
   }
 
   public void setLocale(Locale locale) {
-    if (isCommitted())
-      return;
-    //if (included)
-      //return;     // Ignore any call from an included servlet
+    if (isCommitted()) return;
+    // if (included)
+    // return;     // Ignore any call from an included servlet
 
-   // super.setLocale(locale);
+    // super.setLocale(locale);
     String language = locale.getLanguage();
     if ((language != null) && (language.length() > 0)) {
       String country = locale.getCountry();
@@ -574,9 +513,16 @@ public class HttpResponse implements HttpServletResponse {
     }
   }
 
-  public void setStatus(int sc) {
-  }
+  public void setStatus(int sc) {}
 
-  public void setStatus(int sc, String message) {
-  }
+  public void setStatus(int sc, String message) {}
+
+  // added by fred
+  /**
+   * The default behavior of this method is to call setCharacterEncoding(String charset) on the
+   * wrapped response object.
+   *
+   * @since 2.4
+   */
+  public void setCharacterEncoding(String charset) {}
 }

@@ -111,24 +111,46 @@ curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
 
 #### 1
 
-```
+```bash
 cd HowTomcatWorks/src
 
-javac -classpath ".:../lib/servlet.jar:" ex03/pyrmont/*java ex03/pyrmont/startup/*java -Xlint:unchecked -Xlint:deprecation
+find ./ex03 -name "*class"
 
-java -classpath ".:../lib/servlet.jar:" "ex03.pyrmont.startup.Bootstrap"
+find ./ex03 -name "*class" -delete
+
+javac \
+-classpath ".:../lib/servlet.jar:" \
+ex03/pyrmont/*java \
+ex03/pyrmont/startup/*java \
+-Xlint:unchecked \
+-Xlint:deprecation
+
+java \
+-classpath ".:../lib/servlet.jar:" \
+"ex03.pyrmont.startup.Bootstrap"
 
 curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
 ```
 
 #### 2
 
-```
+```bash
 cd HowTomcatWorksStudy/src/main/java
 
-javac -classpath ".:../lib/servlet.jar:" ex03/pyrmont/*java ex03/pyrmont/startup/*java -Xlint:unchecked -Xlint:deprecation
+find ./ex03 -name "*class"
 
-java -classpath ".:../lib/servlet.jar:" "ex03.pyrmont.startup.Bootstrap"
+find ./ex03 -name "*class" -delete
+
+javac \
+-classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
+ex03/pyrmont/*java \
+ex03/pyrmont/startup/*java \
+-Xlint:unchecked \
+-Xlint:deprecation
+
+java \
+-classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
+"ex03.pyrmont.startup.Bootstrap"
 
 curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
 ```

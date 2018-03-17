@@ -1,9 +1,9 @@
 package ex03.pyrmont.connector.http;
 
-/** this class copies methods from org.apache.catalina.connector.HttpRequestBase
- *  and org.apache.catalina.connector.http.HttpRequestImpl.
- *  The HttpRequestImpl class employs a pool of HttpHeader objects for performance
- *  These two classes will be explained in Chapter 4.
+/**
+ * this class copies methods from org.apache.catalina.connector.HttpRequestBase and
+ * org.apache.catalina.connector.http.HttpRequestImpl. The HttpRequestImpl class employs a pool of
+ * HttpHeader objects for performance These two classes will be explained in Chapter 4.
  */
 import ex03.pyrmont.connector.RequestStream;
 import javax.servlet.http.HttpServletRequest;
@@ -48,30 +48,20 @@ public class HttpRequest implements HttpServletRequest {
   private String requestedSessionId;
   private boolean requestedSessionURL;
 
-  /**
-   * The request attributes for this request.
-   */
+  /** The request attributes for this request. */
   protected HashMap attributes = new HashMap();
-  /**
-   * The authorization credentials sent with this Request.
-   */
+  /** The authorization credentials sent with this Request. */
   protected String authorization = null;
-  /**
-   * The context path for this request.
-   */
+  /** The context path for this request. */
   protected String contextPath = "";
-  /**
-   * The set of cookies associated with this Request.
-   */
+  /** The set of cookies associated with this Request. */
   protected ArrayList cookies = new ArrayList();
   /**
-   * An empty collection to use for returning empty Enumerations.  Do not
-   * add any elements to this collection!
+   * An empty collection to use for returning empty Enumerations. Do not add any elements to this
+   * collection!
    */
   protected static ArrayList empty = new ArrayList();
-  /**
-   * The set of SimpleDateFormat formats to use in getDateHeader().
-   */
+  /** The set of SimpleDateFormat formats to use in getDateHeader(). */
   protected SimpleDateFormat formats[] = {
     new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
     new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
@@ -79,39 +69,30 @@ public class HttpRequest implements HttpServletRequest {
   };
 
   /**
-   * The HTTP headers associated with this Request, keyed by name.  The
-   * values are ArrayLists of the corresponding header values.
+   * The HTTP headers associated with this Request, keyed by name. The values are ArrayLists of the
+   * corresponding header values.
    */
   protected HashMap headers = new HashMap();
   /**
-   * The parsed parameters for this request.  This is populated only if
-   * parameter information is requested via one of the
-   * <code>getParameter()</code> family of method calls.  The key is the
-   * parameter name, while the value is a String array of values for this
-   * parameter.
-   * <p>
-   * <strong>IMPLEMENTATION NOTE</strong> - Once the parameters for a
-   * particular request are parsed and stored here, they are not modified.
-   * Therefore, application level access to the parameters need not be
-   * synchronized.
+   * The parsed parameters for this request. This is populated only if parameter information is
+   * requested via one of the <code>getParameter()</code> family of method calls. The key is the
+   * parameter name, while the value is a String array of values for this parameter.
+   *
+   * <p><strong>IMPLEMENTATION NOTE</strong> - Once the parameters for a particular request are
+   * parsed and stored here, they are not modified. Therefore, application level access to the
+   * parameters need not be synchronized.
    */
   protected ParameterMap parameters = null;
 
-  /**
-   * Have the parameters for this request been parsed yet?
-   */
+  /** Have the parameters for this request been parsed yet? */
   protected boolean parsed = false;
+
   protected String pathInfo = null;
 
-  /**
-   * The reader that has been returned by <code>getReader</code>, if any.
-   */
+  /** The reader that has been returned by <code>getReader</code>, if any. */
   protected BufferedReader reader = null;
 
-  /**
-   * The ServletInputStream that has been returned by
-   * <code>getInputStream()</code>, if any.
-   */
+  /** The ServletInputStream that has been returned by <code>getInputStream()</code>, if any. */
   protected ServletInputStream stream = null;
 
   public HttpRequest(InputStream input) {
@@ -131,43 +112,36 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   /**
-   * Parse the parameters of this request, if it has not already occurred.
-   * If parameters are present in both the query string and the request
-   * content, they are merged.
+   * Parse the parameters of this request, if it has not already occurred. If parameters are present
+   * in both the query string and the request content, they are merged.
    */
   protected void parseParameters() {
-    if (parsed)
-      return;
+    if (parsed) return;
     ParameterMap results = parameters;
-    if (results == null)
-      results = new ParameterMap();
+    if (results == null) results = new ParameterMap();
     results.setLocked(false);
     String encoding = getCharacterEncoding();
-    if (encoding == null)
-      encoding = "ISO-8859-1";
+    if (encoding == null) encoding = "ISO-8859-1";
 
     // Parse any parameters specified in the query string
     String queryString = getQueryString();
     try {
       RequestUtil.parseParameters(results, queryString, encoding);
-    }
-    catch (UnsupportedEncodingException e) {
-      ;
+    } catch (UnsupportedEncodingException e) {;
     }
 
     // Parse any parameters specified in the input stream
     String contentType = getContentType();
-    if (contentType == null)
-      contentType = "";
+    if (contentType == null) contentType = "";
     int semicolon = contentType.indexOf(';');
     if (semicolon >= 0) {
       contentType = contentType.substring(0, semicolon).trim();
-    }
-    else {
+    } else {
       contentType = contentType.trim();
     }
-    if ("POST".equals(getMethod()) && (getContentLength() > 0)
-      && "application/x-www-form-urlencoded".equals(contentType)) {
+    if ("POST".equals(getMethod())
+        && (getContentLength() > 0)
+        && "application/x-www-form-urlencoded".equals(contentType)) {
       try {
         int max = getContentLength();
         int len = 0;
@@ -175,7 +149,7 @@ public class HttpRequest implements HttpServletRequest {
         ServletInputStream is = getInputStream();
         while (len < max) {
           int next = is.read(buf, len, max - len);
-          if (next < 0 ) {
+          if (next < 0) {
             break;
           }
           len += next;
@@ -185,11 +159,8 @@ public class HttpRequest implements HttpServletRequest {
           throw new RuntimeException("Content length mismatch");
         }
         RequestUtil.parseParameters(results, buf, encoding);
-      }
-      catch (UnsupportedEncodingException ue) {
-        ;
-      }
-      catch (IOException e) {
+      } catch (UnsupportedEncodingException ue) {;
+      } catch (IOException e) {
         throw new RuntimeException("Content read fail");
       }
     }
@@ -207,10 +178,9 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   /**
-   * Create and return a ServletInputStream to read the content
-   * associated with this Request.  The default implementation creates an
-   * instance of RequestStream associated with this request, but this can
-   * be overridden if necessary.
+   * Create and return a ServletInputStream to read the content associated with this Request. The
+   * default implementation creates an instance of RequestStream associated with this request, but
+   * this can be overridden if necessary.
    *
    * @exception IOException if an input/output error occurs
    */
@@ -221,6 +191,7 @@ public class HttpRequest implements HttpServletRequest {
   public InputStream getStream() {
     return input;
   }
+
   public void setContentLength(int length) {
     this.contentLength = length;
   }
@@ -234,10 +205,8 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   public void setContextPath(String path) {
-    if (path == null)
-      this.contextPath = "";
-    else
-      this.contextPath = path;
+    if (path == null) this.contextPath = "";
+    else this.contextPath = path;
   }
 
   public void setMethod(String method) {
@@ -281,9 +250,8 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   /**
-   * Set a flag indicating whether or not the requested session ID for this
-   * request came in through a cookie.  This is normally called by the
-   * HTTP Connector, when it parses the request headers.
+   * Set a flag indicating whether or not the requested session ID for this request came in through
+   * a cookie. This is normally called by the HTTP Connector, when it parses the request headers.
    *
    * @param flag The new flag
    */
@@ -321,7 +289,7 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   public int getContentLength() {
-    return contentLength ;
+    return contentLength;
   }
 
   public String getContentType() {
@@ -334,8 +302,7 @@ public class HttpRequest implements HttpServletRequest {
 
   public Cookie[] getCookies() {
     synchronized (cookies) {
-      if (cookies.size() < 1)
-        return (null);
+      if (cookies.size() < 1) return (null);
       Cookie results[] = new Cookie[cookies.size()];
       return ((Cookie[]) cookies.toArray(results));
     }
@@ -343,8 +310,7 @@ public class HttpRequest implements HttpServletRequest {
 
   public long getDateHeader(String name) {
     String value = getHeader(name);
-    if (value == null)
-      return (-1L);
+    if (value == null) return (-1L);
 
     // Work around a bug in SimpleDateFormat in pre-JDK1.2b4
     // (Bug Parade bug #4106807)
@@ -355,9 +321,7 @@ public class HttpRequest implements HttpServletRequest {
       try {
         Date date = formats[i].parse(value);
         return (date.getTime());
-      }
-      catch (ParseException e) {
-        ;
+      } catch (ParseException e) {;
       }
     }
     throw new IllegalArgumentException(value);
@@ -367,10 +331,8 @@ public class HttpRequest implements HttpServletRequest {
     name = name.toLowerCase();
     synchronized (headers) {
       ArrayList values = (ArrayList) headers.get(name);
-      if (values != null)
-        return ((String) values.get(0));
-      else
-        return null;
+      if (values != null) return ((String) values.get(0));
+      else return null;
     }
   }
 
@@ -384,28 +346,22 @@ public class HttpRequest implements HttpServletRequest {
     name = name.toLowerCase();
     synchronized (headers) {
       ArrayList values = (ArrayList) headers.get(name);
-      if (values != null)
-        return (new Enumerator(values));
-      else
-        return (new Enumerator(empty));
+      if (values != null) return (new Enumerator(values));
+      else return (new Enumerator(empty));
     }
   }
 
   public ServletInputStream getInputStream() throws IOException {
-    if (reader != null)
-      throw new IllegalStateException("getInputStream has been called");
+    if (reader != null) throw new IllegalStateException("getInputStream has been called");
 
-    if (stream == null)
-      stream = createInputStream();
+    if (stream == null) stream = createInputStream();
     return (stream);
   }
 
   public int getIntHeader(String name) {
     String value = getHeader(name);
-    if (value == null)
-      return (-1);
-    else
-      return (Integer.parseInt(value));
+    if (value == null) return (-1);
+    else return (Integer.parseInt(value));
   }
 
   public Locale getLocale() {
@@ -423,10 +379,8 @@ public class HttpRequest implements HttpServletRequest {
   public String getParameter(String name) {
     parseParameters();
     String values[] = (String[]) parameters.get(name);
-    if (values != null)
-      return (values[0]);
-    else
-      return (null);
+    if (values != null) return (values[0]);
+    else return (null);
   }
 
   public Map getParameterMap() {
@@ -442,10 +396,8 @@ public class HttpRequest implements HttpServletRequest {
   public String[] getParameterValues(String name) {
     parseParameters();
     String values[] = (String[]) parameters.get(name);
-    if (values != null)
-      return (values);
-    else
-      return null;
+    if (values != null) return (values);
+    else return null;
   }
 
   public String getPathInfo() {
@@ -465,15 +417,12 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   public BufferedReader getReader() throws IOException {
-    if (stream != null)
-      throw new IllegalStateException("getInputStream has been called.");
+    if (stream != null) throw new IllegalStateException("getInputStream has been called.");
     if (reader == null) {
       String encoding = getCharacterEncoding();
-      if (encoding == null)
-        encoding = "ISO-8859-1";
-      InputStreamReader isr =
-        new InputStreamReader(createInputStream(), encoding);
-        reader = new BufferedReader(isr);
+      if (encoding == null) encoding = "ISO-8859-1";
+      InputStreamReader isr = new InputStreamReader(createInputStream(), encoding);
+      reader = new BufferedReader(isr);
     }
     return (reader);
   }
@@ -499,7 +448,7 @@ public class HttpRequest implements HttpServletRequest {
   }
 
   public String getScheme() {
-   return null;
+    return null;
   }
 
   public String getServerName() {
@@ -562,11 +511,9 @@ public class HttpRequest implements HttpServletRequest {
     return false;
   }
 
-  public void removeAttribute(String attribute) {
-  }
+  public void removeAttribute(String attribute) {}
 
-  public void setAttribute(String key, Object value) {
-  }
+  public void setAttribute(String key, Object value) {}
 
   /**
    * Set the authorization credentials sent with this request.
@@ -577,6 +524,50 @@ public class HttpRequest implements HttpServletRequest {
     this.authorization = authorization;
   }
 
-  public void setCharacterEncoding(String encoding) throws UnsupportedEncodingException {
+  public void setCharacterEncoding(String encoding) throws UnsupportedEncodingException {}
+
+  // added by fred
+  /**
+   * Returns the Internet Protocol (IP) source port of the client or last proxy that sent the
+   * request.
+   *
+   * @return an integer specifying the port number
+   * @since 2.4
+   */
+  public int getRemotePort() {
+    return 0;
+  }
+
+  /**
+   * Returns the host name of the Internet Protocol (IP) interface on which the request was
+   * received.
+   *
+   * @return a <code>String</code> containing the host name of the IP on which the request was
+   *     received.
+   * @since 2.4
+   */
+  public String getLocalName() {
+    return null;
+  }
+
+  /**
+   * Returns the Internet Protocol (IP) address of the interface on which the request was received.
+   *
+   * @return a <code>String</code> containing the IP address on which the request was received.
+   * @since 2.4
+   */
+  public String getLocalAddr() {
+    return null;
+  }
+
+  /**
+   * Returns the Internet Protocol (IP) port number of the interface on which the request was
+   * received.
+   *
+   * @return an integer specifying the port number
+   * @since 2.4
+   */
+  public int getLocalPort() {
+    return 0;
   }
 }
