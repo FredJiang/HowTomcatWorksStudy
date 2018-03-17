@@ -105,3 +105,30 @@ mvn clean package exec:java -Dexec.mainClass="ex02fred2.pyrmont.HttpServer2"
 
 curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
 ```
+
+
+### 第三章
+
+#### 1
+
+```
+cd HowTomcatWorks/src
+
+javac -classpath ".:../lib/servlet.jar:" ex03/pyrmont/*java ex03/pyrmont/startup/*java -Xlint:unchecked -Xlint:deprecation
+
+java -classpath ".:../lib/servlet.jar:" "ex03.pyrmont.startup.Bootstrap"
+
+curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
+```
+
+#### 2
+
+```
+cd HowTomcatWorksStudy/src/main/java
+
+javac -classpath ".:../lib/servlet.jar:" ex03/pyrmont/*java ex03/pyrmont/startup/*java -Xlint:unchecked -Xlint:deprecation
+
+java -classpath ".:../lib/servlet.jar:" "ex03.pyrmont.startup.Bootstrap"
+
+curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
+```
