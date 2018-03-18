@@ -12,6 +12,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//
+//
 
 public class ServletProcessor1 {
   private static final Logger logger = LoggerFactory.getLogger(ServletProcessor1.class);
@@ -20,8 +22,8 @@ public class ServletProcessor1 {
     String uri = request.getUri();
     String servletName = uri.substring(uri.lastIndexOf("/") + 1);
     URLClassLoader loader = null;
+    logger.info(uri);
     logger.info(servletName);
-
     try {
       // create a URLClassLoader
       URL[] urls = new URL[1];
@@ -84,7 +86,10 @@ public class ServletProcessor1 {
       logger.info("before casting");
       servlet = (Servlet) myClass.newInstance();
       logger.info("after casting");
+      //
+      //
       servlet.service((ServletRequest) request, (ServletResponse) response);
+      //
     } catch (Exception e) {
       logger.error(e.toString());
     } catch (Throwable e) {

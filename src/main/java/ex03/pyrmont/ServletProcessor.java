@@ -1,26 +1,24 @@
 package ex03.pyrmont;
 
+import java.util.*;
 import ex03.pyrmont.connector.http.Constants;
 import ex03.pyrmont.connector.http.HttpRequest;
-import ex03.pyrmont.connector.http.HttpResponse;
 import ex03.pyrmont.connector.http.HttpRequestFacade;
+import ex03.pyrmont.connector.http.HttpResponse;
 import ex03.pyrmont.connector.http.HttpResponseFacade;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
 import javax.servlet.Servlet;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ServletProcessor {
   private static final Logger logger = LoggerFactory.getLogger(ServletProcessor.class);
-  
-  public void process(HttpRequest request, HttpResponse response) {
 
+  public void process(HttpRequest request, HttpResponse response) {
     String uri = request.getRequestURI();
     String servletName = uri.substring(uri.lastIndexOf("/") + 1);
     URLClassLoader loader = null;
@@ -31,34 +29,70 @@ public class ServletProcessor {
       URL[] urls = new URL[1];
       URLStreamHandler streamHandler = null;
       File classPath = new File(Constants.WEB_ROOT);
-      String repository = (new URL("file", null, classPath.getCanonicalPath() + File.separator)).toString() ;
+      //
+      //
+      String repository =
+          (new URL("file", null, classPath.getCanonicalPath() + File.separator)).toString();
+      logger.info(repository);
+      //
+      //
       urls[0] = new URL(null, repository, streamHandler);
       loader = new URLClassLoader(urls);
-    }
-    catch (IOException e) {
-      System.out.println(e.toString() );
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+      //
+    } catch (IOException e) {
+      logger.error(e.toString());
     }
     Class myClass = null;
     try {
       myClass = loader.loadClass(servletName);
-    }
-    catch (ClassNotFoundException e) {
+    } catch (ClassNotFoundException e) {
       System.out.println(e.toString());
     }
 
     Servlet servlet = null;
 
+    //
+    //
+
     try {
+      logger.info(myClass.getName());
+      logger.info(myClass.getSuperclass().getName());
+      Class[] classes = myClass.getInterfaces();
+      logger.info("" + Arrays.asList(classes));
+      logger.info("before casting");
       servlet = (Servlet) myClass.newInstance();
+      logger.info("after casting");
       HttpRequestFacade requestFacade = new HttpRequestFacade(request);
       HttpResponseFacade responseFacade = new HttpResponseFacade(response);
       servlet.service(requestFacade, responseFacade);
       ((HttpResponse) response).finishResponse();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       System.out.println(e.toString());
-    }
-    catch (Throwable e) {
+    } catch (Throwable e) {
       System.out.println(e.toString());
     }
   }
