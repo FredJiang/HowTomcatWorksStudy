@@ -85,12 +85,12 @@ public class NamingContextBindingsEnumeration
 
 
     public NamingContextBindingsEnumeration(Vector entries) {
-        enumf = entries.elements();
+        enum = entries.elements();
     }
 
 
-    public NamingContextBindingsEnumeration(Enumeration enumf) {
-        this.enumf = enumf;
+    public NamingContextBindingsEnumeration(Enumeration enum) {
+        this.enum = enum;
     }
 
 
@@ -100,7 +100,7 @@ public class NamingContextBindingsEnumeration
     /**
      * Underlying enumeration.
      */
-    protected Enumeration enumf;
+    protected Enumeration enum;
 
 
     // --------------------------------------------------------- Public Methods
@@ -120,7 +120,7 @@ public class NamingContextBindingsEnumeration
      */
     public boolean hasMore()
         throws NamingException {
-        return enumf.hasMoreElements();
+        return enum.hasMoreElements();
     }
 
 
@@ -133,12 +133,12 @@ public class NamingContextBindingsEnumeration
 
 
     public boolean hasMoreElements() {
-        return enumf.hasMoreElements();
+        return enum.hasMoreElements();
     }
 
 
     public Object nextElement() {
-        NamingEntry entry = (NamingEntry) enumf.nextElement();
+        NamingEntry entry = (NamingEntry) enum.nextElement();
         return new Binding(entry.name, entry.value.getClass().getName(), 
                            entry.value, true);
     }

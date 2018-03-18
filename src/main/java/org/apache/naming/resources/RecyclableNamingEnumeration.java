@@ -101,7 +101,7 @@ public class RecyclableNamingEnumeration
     /**
      * Underlying enumeration.
      */
-    protected Enumeration enumf;
+    protected Enumeration enum;
 
 
     // --------------------------------------------------------- Public Methods
@@ -121,7 +121,7 @@ public class RecyclableNamingEnumeration
      */
     public boolean hasMore()
         throws NamingException {
-        return enumf.hasMoreElements();
+        return enum.hasMoreElements();
     }
 
 
@@ -134,12 +134,12 @@ public class RecyclableNamingEnumeration
 
 
     public boolean hasMoreElements() {
-        return enumf.hasMoreElements();
+        return enum.hasMoreElements();
     }
 
 
     public Object nextElement() {
-        return enumf.nextElement();
+        return enum.nextElement();
     }
 
 
@@ -150,7 +150,7 @@ public class RecyclableNamingEnumeration
      * Recycle.
      */
     void recycle() {
-        enumf = entries.elements();
+        enum = entries.elements();
     }
 
 

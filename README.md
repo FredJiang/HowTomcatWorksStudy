@@ -172,3 +172,57 @@ curl -v "http://127.0.0.1:8080/servlet/ModernServlet"
 
 curl -v "http://127.0.0.1:8080/servlet/HelloWorldServlet"
 ```
+
+
+### 第四章
+
+#### 1
+
+```bash
+cd HowTomcatWorks/src
+
+find ./ex04 -name "*class"
+
+find ./ex04 -name "*class" -delete
+
+javac \
+-classpath ".:../lib/servlet.jar:" \
+ex04/pyrmont/core/*java \
+ex04/pyrmont/startup/*java \
+-Xlint:unchecked \
+-Xlint:deprecation
+
+java \
+-classpath ".:../lib/servlet.jar:" \
+"ex04.pyrmont.startup.Bootstrap"
+
+curl -v "http://127.0.0.1:8080/servlet/ModernServlet"
+```
+
+#### 2
+
+```bash
+cd HowTomcatWorksStudy/src/main/java
+
+find ./ex04 -name "*class"
+
+find ./ex04 -name "*class" -delete
+
+find ./ex04/ -name "*.java" > /tmp/fredjavafiles.txt \
+&& \
+javac \
+-classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
+-Xlint:unchecked \
+-Xlint:deprecation \
+@/tmp/fredjavafiles.txt \
+&& \
+java \
+-classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
+"ex04.pyrmont.startup.Bootstrap"
+
+curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
+
+curl -v "http://127.0.0.1:8080/servlet/ModernServlet"
+
+curl -v "http://127.0.0.1:8080/servlet/HelloWorldServlet"
+```

@@ -1050,10 +1050,10 @@ public class WebappLoader
 
             // Looking up directory /WEB-INF/lib in the context
             try {
-                NamingEnumeration enumf = resources.listBindings(libPath);
-                while (enumf.hasMoreElements()) {
+                NamingEnumeration enum = resources.listBindings(libPath);
+                while (enum.hasMoreElements()) {
 
-                    Binding binding = (Binding) enumf.nextElement();
+                    Binding binding = (Binding) enum.nextElement();
                     String filename = libPath + "/" + binding.getName();
                     if (!filename.endsWith(".jar"))
                         continue;
@@ -1150,10 +1150,10 @@ public class WebappLoader
 
         try {
 
-            NamingEnumeration enumf = srcDir.list("");
-            while (enumf.hasMoreElements()) {
+            NamingEnumeration enum = srcDir.list("");
+            while (enum.hasMoreElements()) {
                 NameClassPair ncPair =
-                    (NameClassPair) enumf.nextElement();
+                    (NameClassPair) enum.nextElement();
                 String name = ncPair.getName();
                 Object object = srcDir.lookup(name);
                 File currentFile = new File(destDir, name);

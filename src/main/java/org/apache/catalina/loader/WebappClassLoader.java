@@ -815,10 +815,10 @@ public class WebappClassLoader
         if (getJarPath() != null) {
 
             try {
-                NamingEnumeration enumf = resources.listBindings(getJarPath());
+                NamingEnumeration enum = resources.listBindings(getJarPath());
                 int i = 0;
-                while (enumf.hasMoreElements() && (i < length)) {
-                    NameClassPair ncPair = (NameClassPair) enumf.nextElement();
+                while (enum.hasMoreElements() && (i < length)) {
+                    NameClassPair ncPair = (NameClassPair) enum.nextElement();
                     String name = ncPair.getName();
                     // Ignore non JARs present in the lib folder
                     if (!name.endsWith(".jar"))
@@ -831,10 +831,10 @@ public class WebappClassLoader
                     }
                     i++;
                 }
-                if (enumf.hasMoreElements()) {
-                    while (enumf.hasMoreElements()) {
+                if (enum.hasMoreElements()) {
+                    while (enum.hasMoreElements()) {
                         NameClassPair ncPair =
-                            (NameClassPair) enumf.nextElement();
+                            (NameClassPair) enum.nextElement();
                         String name = ncPair.getName();
                         // Additional non-JAR files are allowed
                         if (name.endsWith(".jar")) {
