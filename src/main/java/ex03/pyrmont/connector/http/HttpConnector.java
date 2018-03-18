@@ -4,23 +4,28 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HttpConnector implements Runnable {
+  private static final Logger logger = LoggerFactory.getLogger(HttpConnector.class);
 
   boolean stopped;
   private String scheme = "http";
 
   public String getScheme() {
+    logger.info(scheme);
     return scheme;
   }
 
   public void run() {
+    logger.info("start run");
     ServerSocket serverSocket = null;
     int port = 8080;
     try {
-      serverSocket =  new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
-    }
-    catch (IOException e) {
+      logger.info("create serverSocket");
+      serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
+    } catch (IOException e) {
       e.printStackTrace();
       System.exit(1);
     }
@@ -29,8 +34,7 @@ public class HttpConnector implements Runnable {
       Socket socket = null;
       try {
         socket = serverSocket.accept();
-      }
-      catch (Exception e) {
+      } catch (Exception e) {
         continue;
       }
       // Hand this socket off to an HttpProcessor

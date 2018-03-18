@@ -13,13 +13,19 @@ import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
 import javax.servlet.Servlet;
 
-public class ServletProcessor {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class ServletProcessor {
+  private static final Logger logger = LoggerFactory.getLogger(ServletProcessor.class);
+  
   public void process(HttpRequest request, HttpResponse response) {
 
     String uri = request.getRequestURI();
     String servletName = uri.substring(uri.lastIndexOf("/") + 1);
     URLClassLoader loader = null;
+    logger.info(uri);
+    logger.info(servletName);
     try {
       // create a URLClassLoader
       URL[] urls = new URL[1];

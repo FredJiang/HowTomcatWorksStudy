@@ -9,11 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public class HttpResponseFacade implements HttpServletResponse {
   private HttpServletResponse response;
+
   public HttpResponseFacade(HttpResponse response) {
     this.response = response;
   }
 
-  /** implementation of HttpServletResponse  */
+  /** implementation of HttpServletResponse */
   public void addCookie(Cookie cookie) {
     response.addCookie(cookie);
   }
@@ -51,7 +52,7 @@ public class HttpResponseFacade implements HttpServletResponse {
   }
 
   public void flushBuffer() throws IOException {
-     response.flushBuffer();
+    response.flushBuffer();
   }
 
   public int getBufferSize() {
@@ -133,7 +134,7 @@ public class HttpResponseFacade implements HttpServletResponse {
   public void setStatus(int sc, String message) {
     response.setStatus(sc, message);
   }
-    // added by fred
+  // added by fred
   /**
    * The default behavior of this method is to call setCharacterEncoding(String charset) on the
    * wrapped response object.

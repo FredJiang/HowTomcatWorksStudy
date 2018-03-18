@@ -143,14 +143,30 @@ find ./ex03 -name "*class" -delete
 
 javac \
 -classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
-ex03/pyrmont/*java \
-ex03/pyrmont/startup/*java \
 -Xlint:unchecked \
--Xlint:deprecation
+-Xlint:deprecation \
+$(find ./ex03/ -name "*.java")
 
+# 或
+find ./ex03/ -name "*.java" > /tmp/fredjavafiles.txt \
+&& \
+echo '' \
+&& \
+cat /tmp/fredjavafiles.txt \
+&& \
+echo '' \
+&& \
+javac \
+-classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
+-Xlint:unchecked \
+-Xlint:deprecation \
+@/tmp/fredjavafiles.txt \
+&& \
 java \
 -classpath ".:/Users/Fred/.m2/repository/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-core/1.2.3/logback-core-1.2.3.jar:/Users/Fred/.m2/repository/ch/qos/logback/logback-classic/1.2.3/logback-classic-1.2.3.jar:../lib/servlet.jar:" \
 "ex03.pyrmont.startup.Bootstrap"
 
 curl -v "http://127.0.0.1:8080/servlet/PrimitiveServlet"
+
+curl -v "http://127.0.0.1:8080/servlet/ModernServlet"
 ```

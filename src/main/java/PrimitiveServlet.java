@@ -5,19 +5,19 @@ import java.io.PrintWriter;
 public class PrimitiveServlet implements Servlet {
 
   public void init(ServletConfig config) throws ServletException {
-    System.out.println("init");
+    System.out.println("PrimitiveServlet init");
   }
 
   public void service(ServletRequest request, ServletResponse response)
       throws ServletException, IOException {
-    System.out.println("from service");
+    System.out.println("PrimitiveServlet from service");
     PrintWriter out = response.getWriter();
-    out.println("Hello. Roses are red.");
-    out.print("Violets are blue.");
+    out.println("PrimitiveServlet Hello. Roses are red.");
+    out.print("PrimitiveServlet Violets are blue.");
   }
 
   public void destroy() {
-    System.out.println("destroy");
+    System.out.println("PrimitiveServlet destroy");
   }
 
   public String getServletInfo() {
